@@ -7,7 +7,12 @@ from django.shortcuts import redirect
 # Create your views here.
 
 def index(request):
-    user_profile = Profile.objects.get(user=request.user)
+    tasks = None
+    completed_tasks = None
+    if request.user:
+        user_profile = Profile.objects.get(user=request.user)
+        tasks = user_profile.tasks.filter(is_complete=False)
+        completed_tasks = user_profile.tasks.filter(is_complete=True)
 
     if request.method == 'POST':
         form = AddTaskForm(request.POST)
@@ -21,10 +26,6 @@ def index(request):
     
     else:
         form = AddTaskForm()
-
-    
-    tasks = user_profile.tasks.filter(is_complete=False)
-    completed_tasks = user_profile.tasks.filter(is_complete=True)
 
     context = {
         'form': form,
