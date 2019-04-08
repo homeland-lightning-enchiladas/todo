@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Simply Todo - Logged Out{% endblock %}
+
+{% block content %}
+
+<section class="bg-dark text-white text-center registration-header">
+  <div class="container">
+    <h1>Logged out complete</h1>
+  </div>
+</section>
+
+
+<section class="content-section">
+  <div class="container">
+    <h2>You have been logged out.</h2>
+    <a href="{% url 'login' %}">Login</a>
+  </div>
+</section>
+
+{% endblock %}

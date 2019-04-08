@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Simply Todo - Password{% endblock %}
+
+{% block content %}
+
+<section class="bg-dark text-white text-center registration-header">
+  <div class="container">
+    <h1>Registration Complete</h1>
+  </div>
+</section>
+
+<section class="form-section">
+  <div class="container registration-width text-center">
+    <h2>Your account has been created!</h2>
+    <h4><a href="{% url 'login' %}">Login</a></h4>
+  </div>
+</section>
+
+{% endblock %}

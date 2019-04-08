@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<section class="bg-dark text-white text-center registration-header">
+  <div class="container">
+    <h1>Simply Todo - Login</h1>
+  </div>
+</section>
+
+<section class="form-section">
+  <div class="container registration-width">
+    {% if next %}
+      {% if user.is_authenticated %}
+        <div class="alert alert-warning">Your account doesn't have access to this page. To proceed, please login with an account that has access.</div>
+      {% else %}
+        <div class="alert alert-warning">Please login to see this page.</div>
+      {% endif %}
+    {% endif %}
+    {% if form.errors %}
+      <div class="alert alert-warning">
+        Your username and password didn't match.
+      </div>
+    {% endif %}
+    <form method="post" action="{% url 'login' %}">
+      {% csrf_token %} {% load widget_tweaks %}
+      <div class="form-group">
+        {{ form.username.label_tag }} {{ form.username|add_class:"form-control" }}
+      </div>
+      <div class="form-group">
+        {{ form.password.label_tag }} {{ form.password|add_class:"form-control" }}
+      </div>
+
+      <button type="submit" class="btn btn-secondary btn-block">Login</button>
+      <input type="hidden" name="next" value="{{ next }}">
+    </form>
+    <br>
+    <p class="text-primary">
+      <a href="{% url 'password_reset' %}">Forgot password?</a>
+    </p>
+    <p class="text-primary">
+      <a href="{% url 'register' %}">Sign up</a>
+    </p>
+  </div>
+</section>
+
+{% endblock %}

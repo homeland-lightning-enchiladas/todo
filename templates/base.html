@@ -29,6 +29,20 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarText">
         <!-- Nav bar items here -->
+        <ul class="nav navbar-nav ml-auto">
+          {% if user.is_authenticated %}
+            <li class="navbar-right">
+              <a class="nav-link" href="">{{ user.get_username }}</a>
+            </li>
+            <li class="navbar-right">
+              <a class="nav-link" href="{% url 'logout'%}?next={{request.path}}">Logout</a>
+            </li>
+          {% else %}
+            <li class="navbar-right">
+              <a class="nav-link" href="{% url 'login'%}">Login</a>
+            </li>
+          {% endif %} 
+        </ul>
       </div>
     </nav>
     {% endblock %}

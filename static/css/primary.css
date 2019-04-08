@@ -18,4 +18,17 @@ a.navbar-brand {
 input[readonly].form-control {
   background-color: #fff;
 }
-  
+
+.navbar-nav > li.navbar-right {
+  float: right !important;
+}
+
+.form-section {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.registration-header {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
