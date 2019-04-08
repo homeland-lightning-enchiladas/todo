@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 # Create your views here.
 
 def index(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         user_profile = Profile.objects.get(user=request.user)
         tasks = user_profile.tasks.filter(is_complete=False)
         completed_tasks = user_profile.tasks.filter(is_complete=True)
