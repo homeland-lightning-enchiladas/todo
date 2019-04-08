@@ -1,1 +1,67 @@
 {% extends "base.html" %}
+
+{% block content %}
+<section class="content-section">
+  <div class="container">
+    <br>
+    <form class="form-group" action="." method="post">
+      {% csrf_token %}
+      <div class="input-group row">
+        {% load home_extras %}
+        {{ form.description|addcss:"form-control form-control-lg" }}
+        <div class="input-group-append">
+          <button class="btn btn-outline-primary" type="submit">Add Task</button>
+        </div>
+      </div>
+    </form>
+    {% for task in tasks %}
+    <div class="form-group">
+      <div class="input-group row">
+        <input type="text" class="form-control form-control-lg" value="{{task.description}}" readonly>
+        <div class="input-group-append">
+          <div class="input-group-text">
+            <input type="checkbox" onclick="window.location.href='{% url 'task_complete' task.id %}'">
+          </div>
+          <button type="button" class="btn btn-outline-secondary input-group-text dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Reassign</a>
+            <div role="separator" class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'task_delete' task.id %}">Delete</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    <div class="row">
+      <p>
+        <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseComplete">
+          Show Completed
+        </button>
+      </p>
+    </div>
+
+    <div class="collapse" id="collapseComplete">
+      {% for task in completed_tasks %}
+      <div class="form-group">
+        <div class="input-group row">
+          <input type="text" class="form-control form-control-lg" value="{{task.description}}" readonly>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <input type="checkbox" checked="checked">
+            </div>
+            <button type="button" class="btn btn-outline-secondary input-group-text dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#">Delete</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

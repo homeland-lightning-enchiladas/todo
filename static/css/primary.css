@@ -1,32 +1,21 @@
 body {
-    font-family: 'Source Sans Pro';
-  }
+  font-family: 'Source Sans Pro';
+}
   
-  .bg-dark {
-    background-color: #000000 !important;
-  }
-  
-  a.navbar-brand {
-    font-weight: bold;
-  }
-  
-  .content-section {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-  }
-  
-  .tag {
-    position: relative;
-    padding: 0rem 0.25rem;
-    margin-bottom: 0.5rem;
-    border: 1px solid transparent;
-    border-radius: .25rem;
-    display: inline-block;
-    height: 1.75rem;
-  }
-  
-  .tag-section {
-    padding: 0rem 1rem;
-  }
-  
+.bg-dark {
+  background-color: #18453B !important;
+}
+
+a.navbar-brand {
+  font-weight: bold;
+}
+
+.content-section {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+input[readonly].form-control {
+  background-color: #fff;
+}
   

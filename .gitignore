@@ -105,3 +105,6 @@ venv.bak/
 
 # GCP Local only
 cloud_sql_proxy
+
+# Visual Studio Code
+.vscode
