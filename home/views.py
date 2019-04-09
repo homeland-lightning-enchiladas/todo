@@ -5,6 +5,7 @@ from .forms import AddTaskForm, UserCreationForm, ReassignTaskForm
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.messages import get_messages
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -51,7 +52,7 @@ def index(request):
                 new_profile.save()
 
                 # Send successful Django message
-                messages.add_message(request, messages.INFO, f'Task {task_id} reassigned to {reassign_email}')
+                messages.add_message(request, messages.INFO, f'Task "{task.description}" (#{task_id}) reassigned to {reassign_email}')
             else:
                 show_reassign_modal = True
                 old_task_id = reassign_form.data['id']
@@ -73,21 +74,35 @@ def index(request):
 
     return render(request, 'index.html', context)
 
-# TODO: require login
+@login_required(login_url='login')
 def delete_task(request, id):
-    Task.objects.get(id=id).delete()
+    print(request.user)
+    task = Task.objects.get(id=id)
+    # Check requesting user is assigned this task
+    if task.profile_set.filter(user=request.user).count() > 0:
+        task.delete()
+    else:
+        messages.add_message(request, messages.ERROR, 'You do not have permission to delete that task.')
     return HttpResponseRedirect('/')
 
+@login_required(login_url='login')
 def complete_task(request, id):
     task = Task.objects.get(id=id)
-    task.is_complete = True
-    task.save(update_fields=['is_complete'])
+    if task.profile_set.filter(user=request.user).count() > 0:
+        task.is_complete = True
+        task.save(update_fields=['is_complete'])
+    else:
+        messages.add_message(request, messages.ERROR, 'You do not have permission to mark that task complete.')
     return HttpResponseRedirect('/')
 
+@login_required(login_url='login')
 def not_complete_task(request, id):
     task = Task.objects.get(id=id)
-    task.is_complete = False
-    task.save(update_fields=['is_complete'])
+    if task.profile_set.filter(user=request.user).count() > 0:
+        task.is_complete = False
+        task.save(update_fields=['is_complete'])
+    else:
+        messages.add_message(request, messages.ERROR, 'You do not have permission to mark that task not complete.')
     return HttpResponseRedirect('/')
 
 def register(request):
