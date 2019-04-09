@@ -35,33 +35,45 @@
               <a class="nav-link" href="">{{ user.get_username }}</a>
             </li>
             <li class="navbar-right">
-              <a class="nav-link" href="{% url 'logout'%}?next={{request.path}}">Logout</a>
+              <a class="nav-link active" href="{% url 'logout'%}?next={{request.path}}">Logout</a>
             </li>
           {% else %}
             <li class="navbar-right">
-              <a class="nav-link" href="{% url 'login'%}">Login</a>
+              <a class="nav-link active" href="{% url 'login'%}">Login</a>
             </li>
           {% endif %} 
         </ul>
       </div>
     </nav>
     {% endblock %}
-    {% block content %}
-    <section class="content-section">
-      <div class="container text-center">
-        <div class="alert alert-warning" role="alert">
-          <a class="text">This page is under construction.</a>
+    <div class="content">
+      {% block content %}
+      <section class="content-section">
+        <div class="container text-center">
+          <div class="alert alert-warning" role="alert">
+            <a class="text">This page is under construction.</a>
+          </div>
         </div>
+      </section>
+      {% endblock %}
+    </div>
+    <!-- Footer -->
+    <!-- HTML and CSS for footer adapted from https://tutorialzine.com/2016/10/freebie-5-fantastic-bootstrap-footers -->
+    <footer id="myFooter">
+      <div class="footer-copyright">
+        <p>Created at Michigan State University for Network Management and Security (MI 361) by Team Homeland Lightning Enchiladas.</p>
       </div>
-    </section>
-    {% endblock %}
+    </footer>
+
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    
     {% load static %}
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="{% static 'js/primary.js' %}"></script>
+    {% block scripts %}
+    {% endblock %}
   </body>
 </html>

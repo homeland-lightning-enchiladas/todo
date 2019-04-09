@@ -3,7 +3,29 @@
 {% block content %}
 <section class="content-section">
   <div class="container">
-    <br>
+    <div class="jumbotron">
+      <h1 class="display-4">Hello{% if user.first_name %}, {{ user.first_name }}{% endif %}!</h1>
+      <p class="lead">Welcome to Simply Todo. You can add tasks in the box below. Click the checkbox to mark a task complete. You can also reassign tasks to other Simply Todo users by clicking the arrow.</p>
+      {% if not user.is_authenticated %}
+      <br>
+      <a class="btn btn-primary btn-lg btn-block" href="{% url 'register' %}" role="button">Register</a>
+      <a class="btn btn-primary btn-lg btn-block" href="{% url 'login' %}" role="button">Login</a>
+      {% endif %}
+    </div>
+    <hr>
+
+    <!-- Message alerts -->
+    {% for message in messages %}
+    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <hr>
+    {% endfor %}
+
+    <!-- Add task form -->
     {% if user.is_authenticated %}
     {% if form.errors %}
       <div class="alert alert-warning">
@@ -12,17 +34,23 @@
     {% endif %}
     <form class="form-group" action="." method="post">
       {% csrf_token %}
-      <div class="input-group row">
+      <div class="input-group">
         {% load home_extras %}
         {{ form.description|addcss:"form-control form-control-lg" }}
         <div class="input-group-append">
-          <button class="btn btn-outline-primary" type="submit">Add Task</button>
+          <button class="btn btn-outline-primary" type="submit" name="add-task">Add Task</button>
         </div>
       </div>
     </form>
+    <hr>
+
+    <!-- List of uncomplete tasks -->
     {% for task in tasks %}
     <div class="form-group">
-      <div class="input-group row">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">{{ task.creator.user.email }}</span>
+        </div>
         <input type="text" class="form-control form-control-lg" value="{{task.description}}" readonly>
         <div class="input-group-append">
           <div class="input-group-text">
@@ -32,7 +60,7 @@
             <span class="sr-only">Toggle Dropdown</span>
           </button>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Reassign</a>
+            <a class="dropdown-item" href="#reassignModal" data-toggle="modal" data-id="{{task.id}}">Reassign</a>
             <div role="separator" class="dropdown-divider"></div>
             <a class="dropdown-item" href="{% url 'task_delete' task.id %}">Delete</a>
           </div>
@@ -41,24 +69,27 @@
     </div>
     {% endfor %}
     {% if completed_tasks %}
-    <div class="row">
-      <p>
-        <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseComplete">
-          Show Completed
-        </button>
-      </p>
-    </div>
+    <hr>
 
+    <!-- List of complete tasks -->
+    <p>
+      <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseComplete">
+        Show Completed
+      </button>
+    </p>
     <div class="collapse" id="collapseComplete">
       {% for task in completed_tasks %}
       <div class="form-group">
-        <div class="input-group row">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">{{ task.creator.user.email }}</span>
+          </div>
           <input type="text" class="form-control form-control-lg" value="{{task.description}}" readonly>
           <div class="input-group-append">
             <div class="input-group-text">
               <input type="checkbox" checked="checked" onclick="window.location.href='{% url 'task_not_complete' task.id %}'">
             </div>
-            <button type="button" class="btn btn-outline-secondary input-group-text dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button type="button" class="btn btn-outline-secondary input-group-text dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
               <span class="sr-only">Toggle Dropdown</span>
             </button>
             <div class="dropdown-menu">
@@ -69,15 +100,29 @@
       </div>
       {% endfor %}
     </div>
+
+    <!-- Reassignment modal -->
+    {% include 'reassign_modal.html' with form=reassign_form %}
     {% endif %}
     {% else %}
+
+    <!-- Not logged in -->
     <div class="text-center">
-      <h1>Welcome to Simply Todo</h1>
-      <h2><a href="{% url 'login' %}">Login</a> or <a href="{% url 'register' %}">register</a> to view your tasks.</h2>
-      <br>
       <img src="https://msu.edu/_assets/images/homepage-heroes/spring-west-circle.JPG" class="img-fluid">
     </div>
     {% endif %}
   </div>
 </section>
+{% endblock %}
+
+{% block scripts %}
+{% if show_reassign_modal %}
+<script type="text/javascript">
+  var modal = $('#reassignModal');
+  modal.removeClass('fade');
+  modal.modal('show');
+  modal.find('#id_id').val({{ old_task_id }});
+  modal.addClass('fade');
+</script>
+{% endif %}
 {% endblock %}

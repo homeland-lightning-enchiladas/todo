@@ -15,9 +15,9 @@ a.navbar-brand {
   padding-bottom: 1rem;
 }
 
-input[readonly].form-control {
+/* input[readonly].form-control {
   background-color: #fff;
-}
+} */
 
 .navbar-nav > li.navbar-right {
   float: right !important;
@@ -31,4 +31,50 @@ input[readonly].form-control {
 .registration-header {
   padding-top: 3rem;
   padding-bottom: 3rem;
+}
+
+/* Footer HTML and CSS from https://tutorialzine.com/2016/10/freebie-5-fantastic-bootstrap-footers */
+
+#myFooter .footer-copyright {
+  background-color: #f08521;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  text-align: center;
+}
+
+#myFooter .footer-copyright p {
+  margin: 10px;
+  color: #ffffff;
+}
+
+@media screen and (max-width: 767px) {
+  #myFooter {
+      text-align: center;
+  }
+}
+
+/* CSS used for positioning the footers at the bottom of the page. */
+/* You can remove this. */
+
+html{
+  height: 100%;
+}
+
+body{
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  height: 100%;
+}
+
+.content{
+ flex: 1 0 auto;
+ -webkit-flex: 1 0 auto;
+ min-height: 200px;
+}
+
+#myFooter{
+ flex: 0 0 auto;
+ -webkit-flex: 0 0 auto;
 }
