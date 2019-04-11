@@ -3,6 +3,8 @@
 {% block content %}
 <section class="content-section">
   <div class="container">
+
+    <!-- Jumbotron Header -->
     <div class="jumbotron">
       <h1 class="display-4">Hello{% if user.first_name %}, {{ user.first_name }}{% endif %}!</h1>
       <p class="lead">Welcome to Simply Todo. You can add tasks in the box below. Click the checkbox to mark a task complete. You can also reassign tasks to other Simply Todo users by clicking the arrow.</p>
@@ -49,7 +51,7 @@
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-prepend">
-          <span class="input-group-text">{{ task.creator.user.email }}</span>
+          <span class="input-group-text">{{ task.creator.user }}</span>
         </div>
         <input type="text" class="form-control form-control-lg" value="{{task.description}}" readonly>
         <div class="input-group-append">
@@ -68,10 +70,10 @@
       </div>
     </div>
     {% endfor %}
-    {% if completed_tasks %}
-    <hr>
 
     <!-- List of complete tasks -->
+    {% if completed_tasks %}
+    <hr>
     <p>
       <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseComplete">
         Show Completed
@@ -82,7 +84,7 @@
       <div class="form-group">
         <div class="input-group">
           <div class="input-group-prepend">
-            <span class="input-group-text">{{ task.creator.user.email }}</span>
+            <span class="input-group-text">{{ task.creator.user }}</span>
           </div>
           <input type="text" class="form-control form-control-lg" value="{{task.description}}" readonly>
           <div class="input-group-append">
@@ -93,7 +95,7 @@
               <span class="sr-only">Toggle Dropdown</span>
             </button>
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="#">Delete</a>
+              <a class="dropdown-item" href="{% url 'task_delete' task.id %}">Delete</a>
             </div>
           </div>
         </div>
